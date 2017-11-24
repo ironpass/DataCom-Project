@@ -9,15 +9,15 @@ import java.io.PrintStream;
 import java.util.concurrent.TimeUnit;
 
 public class Executer implements Runnable {
-	private String cmd = "cmd.exe /c cd pythonsrc" ;
+	private String cmd = "cmd.exe /c cd pythonsrc";
 	private String filename;
 
 	public Executer(String subnetMask, String defaultGateway, String startIp,
 			String limit, String retry, String maxthread, String filename) {
 		// Command for execution
-		cmd += " && python main.py " + subnetMask + " " + defaultGateway + " "
-				+ startIp + " " + limit + " " + retry + " " + maxthread + " "
-				+ filename;
+		cmd += " && start python main.py " + subnetMask + " " + defaultGateway
+				+ " " + startIp + " " + limit + " " + retry + " " + maxthread
+				+ " " + filename;
 		this.filename = filename;
 	}
 
@@ -26,17 +26,17 @@ public class Executer implements Runnable {
 		// TODO Auto-generated method stub
 		try {
 			System.out.println("Executing: " + cmd);
-			Process p = Runtime.getRuntime().exec(cmd);
-			File f = new File("pythonsrc/"+filename+".csv");
+			Runtime.getRuntime().exec(cmd);
+			File f = new File("pythonsrc/" + filename + ".csv");
 			while (!f.exists()) {
-				p.waitFor(1,TimeUnit.SECONDS);
+				TimeUnit.SECONDS.sleep(3);
 				System.out.println("Now Loading...");
 			}
-			
+			System.out.println("Done!");
+
 			Display display = new Display(filename);
 			display.run();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

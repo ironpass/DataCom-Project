@@ -14,13 +14,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-
 public class Display {
 
 	private JFrame frame;
 	private JPanel panel;
 	private GridBagConstraints c = new GridBagConstraints();
 	private String filename;
+
 	/**
 	 * Create the application.
 	 */
@@ -28,6 +28,7 @@ public class Display {
 		this.filename = filename;
 		initialize();
 	}
+
 	public void run() {
 		frame.setVisible(true);
 	}
@@ -40,17 +41,18 @@ public class Display {
 		setheader();
 		setList();
 	}
-	
+
 	private void setFrame() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 640, 480);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 		JScrollPane scrollPanel = new JScrollPane(panel);
 		frame.add(scrollPanel);
 	}
+
 	private void setheader() {
 		JLabel lblIp = new JLabel("IP");
 		lblIp.setFont(new Font("Arial", Font.BOLD, 18));
@@ -61,9 +63,8 @@ public class Display {
 		c.weightx = 0.33;
 		c.weighty = 0.2;
 		c.fill = GridBagConstraints.BOTH;
-		
-		panel.add(lblIp,c);
-		
+		panel.add(lblIp, c);
+
 		JLabel lblMacaddress = new JLabel("MAC Address");
 		lblMacaddress.setFont(new Font("Arial", Font.BOLD, 18));
 		lblMacaddress.setHorizontalAlignment(JLabel.CENTER);
@@ -73,8 +74,8 @@ public class Display {
 		c.weightx = 0.33;
 		c.weighty = 0.2;
 		c.fill = GridBagConstraints.BOTH;
-		panel.add(lblMacaddress,c);
-		
+		panel.add(lblMacaddress, c);
+
 		JLabel lblManufacturer = new JLabel("Manufacturer");
 		lblManufacturer.setFont(new Font("Arial", Font.BOLD, 18));
 		lblManufacturer.setHorizontalAlignment(JLabel.CENTER);
@@ -84,27 +85,45 @@ public class Display {
 		c.weightx = 0.33;
 		c.weighty = 0.2;
 		c.fill = GridBagConstraints.BOTH;
-		panel.add(lblManufacturer,c);
-		
+		panel.add(lblManufacturer, c);
+
 	}
+
 	private void setList() {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("pythonsrc/"+filename+".csv"));
+			BufferedReader reader = new BufferedReader(new FileReader(
+					"pythonsrc/" + filename + ".csv"));
 			String line = reader.readLine();
 			line = reader.readLine();
-			for (int i = 1;line!=null;i++) {
+			for (int i = 1; line != null; i++) {
 				String[] split = line.split(",");
 				JLabel append;
-				for (int j = 0;j<3;j++) {
-					append = new JLabel("    "+split[j]);
+				for (int j = 0; j < split.length; j++) {
+					String currtxt = "";
+					if (j == 2) {
+						currtxt = "";
+						while (j < split.length) {
+							currtxt += split[j];
+							if(j<split.length-1)
+								currtxt+=",";
+							j++;
+						}
+					} else {
+						currtxt = split[j];
+					}
+					append = new JLabel("    " + currtxt);
 					append.setFont(new Font("Arial", Font.PLAIN, 16));
-					append.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-					c.gridx = j+1;
-					c.gridy = i+1;
+					append.setBorder(BorderFactory
+							.createLineBorder(Color.BLACK));
+					if (j<2)
+						c.gridx = j + 1;
+					else
+						c.gridx = 3;
+					c.gridy = i + 1;
 					c.weightx = 0.33;
 					c.weighty = 0.5;
 					c.fill = GridBagConstraints.BOTH;
-					panel.add(append,c);
+					panel.add(append, c);
 				}
 				line = reader.readLine();
 			}
