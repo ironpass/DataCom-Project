@@ -45,7 +45,7 @@ public class Display {
 	private void setFrame() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 640, 480);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
